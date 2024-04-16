@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="360&deg; Image Gallery - A-Frame">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+
+</head>
+
+
+
+
+
+
+<body>
+    <!-- As if this Glitch were a typical HTML CodePen... -->
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+    <!-- Use components defined in separate files. -->
+    <script src="./js/arrow-key-rotation.js"></script>
+    <script src="./js/play-on-window-click.js"></script>
+    <script src="./js/play-on-vrdisplayactivate-or-enter-vr.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-layout-component@5.3.0/dist/aframe-layout-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-template-component@3.2.1/dist/aframe-template-component.min.js"></script>
+    <script
+        src="https://unpkg.com/aframe-proxy-event-component@2.1.0/dist/aframe-proxy-event-component.min.js"></script>
+
+
+    <!-- Specify our scene. -->
+    <a-scene stats>
+        <!-- The original example also has this 180 degree rotation, to appear to be going forward. -->
+        <a-videosphere 
+        rotation="0 180 0" 
+        src="#video" 
+        play-on-window-click 
+        play-on-vrdisplayactivate-or-enter-vr>
+        </a-videosphere>
+
+        <!-- Define camera with zero user height, movement disabled and arrow key rotation added. -->
+        <a-camera 
+        user-height="0" 
+        wasd-controls-enabled="false" 
+        arrow-key-rotation>
+            <!-- Text elements for display messaging. -->
+            <a-entity id="msg" position="0 -0.3 -1.5" text="align:center; 
+                width:3;
+                wrapCount:100;
+                color:red;
+                value:Click window to make the video play, if needed.">
+            </a-entity>
+        </a-camera>
+
+        <!-- Don't wait for the video to load, we're going to stream it. -->
+        <a-assets timeout="1">
+            <!-- Multiple source video. -->
+            <video id="video" 
+            style="display:none" 
+            autoplay 
+            loop 
+            crossorigin="anonymous" 
+            playsinline 
+            webkit-playsinline>
+                <!-- Native HLS video source. -->
+                <source type="application/x-mpegurl" src="https://raw.githack.com/aSlijkhuis/Dump/main/ayutthaya_-_easy_tripod_paint___360_vr_master_series___free_download_(original).mp4%20(720p).mp4" />
+                <!-- MP4 video source. -->
+               <source type="video/mp4"
+                src="https://raw.githack.com/aSlijkhuis/Dump/main/ayutthaya_-_easy_tripod_paint___360_vr_master_series___free_download_(original).mp4%20(720p).mp4" /> -->
+
+                 <!--<source type="video/ogg"
+    src="https://cdn.jsdelivr.net/gh/aframevr/assets@master/360-video-boilerplate/video/city.mp4" />--> 
+            </video>
+        </a-assets>
+    </a-scene>
+
+    <!-- Attach other behaviors. -->
+    <script>
+        var video = document.querySelector('#video');
+        var msg = document.querySelector('#msg');
+
+        // When we get the playing event, show what source is used and what type it is.
+        video.addEventListener('playing', function () {
+            var currentSource = video.querySelector('[src="' + video.currentSrc + '"]');
+            msg.setAttribute('text', 'value', video.currentSrc + '\n' + currentSource.type);
+        });
+    </script>
+</body>
+
+</html>
